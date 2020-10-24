@@ -1,0 +1,12 @@
+{
+  "extends": ["airbnb", "prettier", "prettier/react"],
+  "rules": {
+    "react/react-in-jsx-scope": "off",
+    "import/no-named-as-default": 0,
+    "react/jsx-filename-extension": [1, { "extensions": [".js"] }]
+  },
+  "env": {
+    "browser": true,
+    "node": true
+  }
+}

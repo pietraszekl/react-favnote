@@ -1,1 +1,1 @@
-App to taking notes
+App for taking notes
