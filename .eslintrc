@@ -1,17 +1,19 @@
 {
   "extends": ["airbnb", "prettier", "prettier/react"],
-  "rules": {
-    "react/react-in-jsx-scope": "off",
-    "react/no-unescaped-entities": "off",
-    "react/jsx-props-no-spreading": "off",
-    "import/prefer-default-export": 0,
-    "import/no-named-as-default": 0,
-    "react/jsx-filename-extension": [1, { "extensions": [".js"] }]
-  },
+  "parser": "babel-eslint",
   "env": {
     "jest": true
   },
   "globals": {
     "document": true
+  },
+  "rules": {
+    "react/react-in-jsx-scope": "off",
+    "react/no-unescaped-entities": "off",
+    "react/jsx-props-no-spreading": "off",
+    "react/state-in-constructor": "off",
+    "import/prefer-default-export": 0,
+    "import/no-named-as-default": 0,
+    "react/jsx-filename-extension": [1, { "extensions": [".js"] }]
   }
 }
