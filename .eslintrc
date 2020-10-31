@@ -5,9 +5,11 @@
     "jest": true
   },
   "globals": {
+    "window": true,
     "document": true
   },
   "rules": {
+    "react/prop-types": "off",
     "react/react-in-jsx-scope": "off",
     "react/no-unescaped-entities": "off",
     "react/jsx-props-no-spreading": "off",
