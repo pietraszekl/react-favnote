@@ -7,8 +7,8 @@ import Paragraph from '../../atoms/Paragraph/Paragraph';
 import Heading from '../../atoms/Heading/Heading';
 import Button from '../../atoms/Button/Button';
 import LinkIcon from '../../../assets/icons/link.svg';
-
 import { removeItem as removeItemAction } from '../../../actions';
+import withContext from '../../../hoc/withContext';
 
 const StyledWrapper = styled.div`
   min-height: 380px;
@@ -137,4 +137,4 @@ const mapDispatchToProps = (dispatch) => ({
   removeItem: (itemType, id) => dispatch(removeItemAction(itemType, id)),
 });
 
-export default connect(null, mapDispatchToProps)(Card);
+export default connect(null, mapDispatchToProps)(withContext(Card));

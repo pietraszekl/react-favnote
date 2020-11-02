@@ -21,14 +21,15 @@ const Twitters = ({ twitters }) => (
 );
 
 Twitters.propTypes = {
-  twitters: PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    cardType: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
-    content: PropTypes.string.isRequired,
-    twitterName: PropTypes.string.isRequired,
-    created: PropTypes.string.isRequired,
-  }),
+  twitters: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      title: PropTypes.string.isRequired,
+      content: PropTypes.string.isRequired,
+      twitterName: PropTypes.string.isRequired,
+      created: PropTypes.string.isRequired,
+    }),
+  ),
 };
 
 Twitters.defaultProps = {
@@ -37,7 +38,6 @@ Twitters.defaultProps = {
 
 const mapStateToProps = (state) => {
   const { twitters } = state;
-
   return { twitters };
 };
 

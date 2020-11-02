@@ -16,6 +16,8 @@
     "react/state-in-constructor": "off",
     "import/prefer-default-export": 0,
     "import/no-named-as-default": 0,
+    "no-unused-vars": "warn",
+    "react/no-unused-state": "warn",
     "react/jsx-filename-extension": [1, { "extensions": [".js"] }]
   }
 }

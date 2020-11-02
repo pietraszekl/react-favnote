@@ -91,7 +91,7 @@ const initialState = {
     },
     {
       id: 4,
-      title: 'Woocash',
+      title: 'Reactuj się kto moze!',
       content:
         'Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus, tempora quibusdam natus modi tempore esse adipisci, dolore odit animi',
       created: '10 days',
@@ -104,9 +104,9 @@ const rootReducer = (state = initialState, action) => {
     case 'REMOVE_ITEM':
       return {
         ...state,
-        [action.payload.itemType]: {
+        [action.payload.itemType]: [
           ...state[action.payload.itemType].filter((item) => item.id !== action.payload.id),
-        },
+        ],
       };
     default:
       return state;
