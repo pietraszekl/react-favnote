@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
 import Input from '../../atoms/Input/Input';
 import Button from '../../atoms/Button/Button';
 import withContext from '../../../hoc/withContext';
@@ -39,20 +40,25 @@ const StyledInput = styled(Input)`
 const NewItemBar = ({ pageContext, isVisible, addItem }) => (
   <StyledWrapper isVisible={isVisible} activeColor={pageContext}>
     <Heading big>Create new {pageContext}</Heading>
-    <StyledInput placeholder="title" />
-    {pageContext === 'articles' && <StyledInput placeholder="title" />}
-    <StyledTextArea as="textarea" placeholder="title" />
-    <Button
-      onClick={() =>
-        addItem(pageContext, {
-          title: 'Hello Lukasz',
-          content: 'lorem ipsum',
-        })
-      }
-      activecolor={pageContext}
+    <Formik
+      initialValue={{ title: '', content: '', articleUrl: '', twitterName: '', created: '' }}
+      onSubmit={(values, { setSubmitting }) => {
+        console.log(values);
+        addItem(pageContext, values);
+        setSubmitting(false);
+      }}
     >
-      Add note
-    </Button>
+      {({ isSubmitting }) => (
+        <Form>
+          <StyledInput as={Field} type="text" name="title" placeholder="title" />
+          {pageContext === 'articles' && <StyledInput placeholder="title" />}
+          {/* <StyledTextArea as="textarea" placeholder="title" /> */}
+          <Button type="submit" activecolor={pageContext}>
+            Add note
+          </Button>
+        </Form>
+      )}
+    </Formik>
   </StyledWrapper>
 );
 
