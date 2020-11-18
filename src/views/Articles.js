@@ -1,15 +1,14 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import GridTemplate from '../templates/GridTemplate';
 import Card from '../components/molecules/Card/Card';
 
 const Articles = ({ articles }) => (
-  <GridTemplate pageType="articles">
+  <GridTemplate>
     {articles.map(({ title, content, articleUrl, created, id }) => (
       <Card
         id={id}
-        cardType="articles"
         title={title}
         content={content}
         articleUrl={articleUrl}

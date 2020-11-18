@@ -38,12 +38,6 @@ const InnerWrapper = styled.div`
     `}
 `;
 
-const DateInfo = styled(Paragraph)`
-  margin: 0 0 5px;
-  font-weight: ${({ theme }) => theme.bold};
-  font-size: ${({ theme }) => theme.fontSize.xs};
-`;
-
 const StyledHeading = styled(Heading)`
   margin: 5px 0 0;
 `;
@@ -80,34 +74,25 @@ class Card extends Component {
   handleCardClick = () => this.setState({ redirect: true });
 
   render() {
-    const {
-      id,
-      cardType,
-      title,
-      created,
-      twitterName,
-      articleUrl,
-      content,
-      removeItem,
-    } = this.props;
+    const { id, pageContext, title, twitterName, articleUrl, content, removeItem } = this.props;
     const { redirect } = this.state;
 
     if (redirect) {
-      return <Redirect to={`${cardType}/details/${id}`} />;
+      return <Redirect to={`${pageContext}/details/${id}`} />;
     }
+
     return (
-      <StyledWrapper onClick={this.handleCardClick}>
-        <InnerWrapper activeColor={cardType}>
+      <StyledWrapper>
+        <InnerWrapper onClick={this.handleCardClick} activeColor={pageContext}>
           <StyledHeading>{title}</StyledHeading>
-          <DateInfo>{created}</DateInfo>
-          {cardType === 'twitters' && (
-            <StyledAvatar src={`https://unavatar.now.sh/${twitterName}`} />
+          {pageContext === 'twitters' && (
+            <StyledAvatar src={`https://avatars.io/twitter/${twitterName}`} />
           )}
-          {cardType === 'articles' && <StyledLinkButton href={articleUrl} />}
+          {pageContext === 'articles' && <StyledLinkButton href={articleUrl} />}
         </InnerWrapper>
         <InnerWrapper flex>
           <Paragraph>{content}</Paragraph>
-          <Button secondary onClick={() => removeItem(cardType, id)}>
+          <Button onClick={() => removeItem(pageContext, id)} secondary>
             REMOVE
           </Button>
         </InnerWrapper>
@@ -117,10 +102,9 @@ class Card extends Component {
 }
 
 Card.propTypes = {
-  id: PropTypes.number.isRequired,
-  cardType: PropTypes.oneOf(['notes', 'twitters', 'articles']),
+  id: PropTypes.string.isRequired,
+  pageContext: PropTypes.oneOf(['notes', 'twitters', 'articles']),
   title: PropTypes.string.isRequired,
-  created: PropTypes.string.isRequired,
   twitterName: PropTypes.string,
   articleUrl: PropTypes.string,
   content: PropTypes.string.isRequired,
@@ -128,7 +112,7 @@ Card.propTypes = {
 };
 
 Card.defaultProps = {
-  cardType: 'notes',
+  pageContext: 'notes',
   twitterName: null,
   articleUrl: null,
 };

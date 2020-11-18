@@ -1,16 +1,16 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { connect } from 'react-redux';
+import { Formik, Form } from 'formik';
+import { addItem as addItemAction } from '../../../actions';
 import Input from '../../atoms/Input/Input';
 import Button from '../../atoms/Button/Button';
 import withContext from '../../../hoc/withContext';
 import Heading from '../../atoms/Heading/Heading';
-import { addItem as addNoteAction } from '../../../actions/index';
 
 const StyledWrapper = styled.div`
-  border-left: 10px solid ${({ theme, activeColor }) => theme[activeColor]};
+  border-left: 10px solid ${({ theme, activecolor }) => theme[activecolor]};
   z-index: 9999;
   position: fixed;
   display: flex;
@@ -26,37 +26,72 @@ const StyledWrapper = styled.div`
   transition: transform 0.25s ease-in-out;
 `;
 
+const StyledForm = styled(Form)`
+  display: flex;
+  flex-direction: column;
+`;
+
 const StyledTextArea = styled(Input)`
-  border-radius: 10px;
+  margin: 30px 0 100px;
   border-radius: 20px;
   height: 30vh;
-  margin-bottom: 20px;
 `;
 
 const StyledInput = styled(Input)`
-  margin-bottom: 30px;
+  margin-top: 30px;
 `;
 
-const NewItemBar = ({ pageContext, isVisible, addItem }) => (
-  <StyledWrapper isVisible={isVisible} activeColor={pageContext}>
+const NewItemBar = ({ pageContext, isVisible, addItem, handleClose }) => (
+  <StyledWrapper isVisible={isVisible} activecolor={pageContext}>
     <Heading big>Create new {pageContext}</Heading>
     <Formik
-      initialValue={{ title: '', content: '', articleUrl: '', twitterName: '', created: '' }}
-      onSubmit={(values, { setSubmitting }) => {
-        console.log(values);
+      initialValues={{ title: '', content: '', articleUrl: '', twitterName: '', created: '' }}
+      onSubmit={(values) => {
         addItem(pageContext, values);
-        setSubmitting(false);
+        handleClose();
       }}
     >
-      {({ isSubmitting }) => (
-        <Form>
-          <StyledInput as={Field} type="text" name="title" placeholder="title" />
-          {pageContext === 'articles' && <StyledInput placeholder="title" />}
-          {/* <StyledTextArea as="textarea" placeholder="title" /> */}
+      {({ values, handleChange, handleBlur }) => (
+        <StyledForm>
+          <StyledInput
+            type="text"
+            name="title"
+            placeholder="title"
+            onChange={handleChange}
+            onBlur={handleBlur}
+            value={values.title}
+          />
+          {pageContext === 'twitters' && (
+            <StyledInput
+              placeholder="twitter name eg. hello_roman"
+              type="text"
+              name="twitterName"
+              onChange={handleChange}
+              onBlur={handleBlur}
+              value={values.twitterName}
+            />
+          )}
+          {pageContext === 'articles' && (
+            <StyledInput
+              placeholder="link"
+              type="text"
+              name="articleUrl"
+              onChange={handleChange}
+              onBlur={handleBlur}
+              value={values.articleUrl}
+            />
+          )}
+          <StyledTextArea
+            name="content"
+            as="textarea"
+            onChange={handleChange}
+            onBlur={handleBlur}
+            value={values.content}
+          />
           <Button type="submit" activecolor={pageContext}>
-            Add note
+            Add Note
           </Button>
-        </Form>
+        </StyledForm>
       )}
     </Formik>
   </StyledWrapper>
@@ -64,14 +99,18 @@ const NewItemBar = ({ pageContext, isVisible, addItem }) => (
 
 NewItemBar.propTypes = {
   pageContext: PropTypes.oneOf(['notes', 'twitters', 'articles']),
+  isVisible: PropTypes.bool,
+  addItem: PropTypes.func.isRequired,
+  handleClose: PropTypes.func.isRequired,
 };
 
 NewItemBar.defaultProps = {
   pageContext: 'notes',
+  isVisible: false,
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  addItem: (itemType, itemContent) => dispatch(addNoteAction(itemType, itemContent)),
+  addItem: (itemType, itemContent) => dispatch(addItemAction(itemType, itemContent)),
 });
 
 export default connect(null, mapDispatchToProps)(withContext(NewItemBar));

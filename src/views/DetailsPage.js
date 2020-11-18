@@ -1,44 +1,57 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import axios from 'axios';
 import DetailsTemplate from '../templates/DetailsTemplate';
-import { routes } from '../routes';
+import withContext from '../hoc/withContext';
 
 class DetailsPage extends Component {
   state = {
-    pageType: 'notes',
+    activeItem: {
+      title: '',
+      content: '',
+      articleUrl: '',
+      twitterName: '',
+    },
   };
 
   componentDidMount() {
-    const { match } = this.props;
-
-    switch (match.path) {
-      case routes.twitter:
-        this.setState({ pageType: 'twitters' });
-        break;
-      case routes.note:
-        this.setState({ pageType: 'notes' });
-        break;
-      case routes.article:
-        this.setState({ pageType: 'articles' });
-        break;
-      default:
-      // console.log('Something went wrong with matching paths');
+    if (this.props.activeItem) {
+      const [activeItem] = this.props.activeItem;
+      this.setState({ activeItem });
+    } else {
+      const { id } = this.props.match.params;
+      axios
+        .get(`http://localhost:9000/api/note/${id}`)
+        .then(({ data }) => {
+          this.setState({ activeItem: data });
+        })
+        .catch((err) => console.log(err));
     }
   }
 
   render() {
-    const { pageType } = this.state;
+    const { activeItem } = this.state;
 
     return (
-      <DetailsTemplate pageType={pageType}>
-        <p>{pageType}</p>
-      </DetailsTemplate>
+      <DetailsTemplate
+        title={activeItem.title}
+        content={activeItem.content}
+        articleUrl={activeItem.articleUrl}
+        twitterName={activeItem.twitterName}
+      />
     );
   }
 }
 
-DetailsPage.propTypes = {
-  match: PropTypes.string.isRequired,
+const mapStateToProps = (state, ownProps) => {
+  if (state[ownProps.pageContext]) {
+    return {
+      activeItem: state[ownProps.pageContext].filter(
+        (item) => item._id === ownProps.match.params.id,
+      ),
+    };
+  }
+  return {};
 };
 
-export default DetailsPage;
+export default withContext(connect(mapStateToProps)(DetailsPage));
