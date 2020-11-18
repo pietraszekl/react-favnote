@@ -9,12 +9,14 @@ import Articles from './Articles';
 import Twitters from './Twitters';
 import DetailsPage from './DetailsPage';
 import { routes } from '../routes';
+import LoginPage from './LoginPage';
 
 const Root = () => (
   <Provider store={store}>
     <BrowserRouter>
       <MainTemplate>
         <Switch>
+          <Route exact path={routes.login} component={LoginPage} />
           <Route exact path={routes.home} render={() => <Redirect to="/notes" />} />
           <Route exact path={routes.notes} component={Notes} />
           <Route path={routes.note} component={DetailsPage} />
